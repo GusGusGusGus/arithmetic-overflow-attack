@@ -1,15 +1,6 @@
-# Basic Sample Hardhat Project
+# TimeLocker vulnerable contract, exploit and mitigation
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+Solidity contract to timelock user tokens for a fixed amount of time 
+The TimeLockVulnerable.sol contract has a known vulnerability.
+The Attacker.sol contract shows how TimeLockVulnerable.sol would be exploited.
+The TimeLockCorrected.sol contract has the solution for this issue.
