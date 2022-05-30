@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts-ethereum-package": "^3.0.0",
+    "@openzeppelin/upgrades": "^2.8.0",
     "hardhat": "^2.9.6"
   }
 }
