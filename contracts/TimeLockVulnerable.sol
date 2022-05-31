@@ -15,7 +15,7 @@ contract TimeLockVulnerable {
     /// @dev payable function that saves the sent value on-chain and the locktime value (timestamp of the current block + 1 week) to the locktime array
     function deposit() external payable {
         balances[msg.sender] += msg.value;
-        balances[msg.sender] = block.timestamp + 1 weeks;
+        balances[msg.sender] = now + 1 weeks;
     }
 
     /// @notice Allows a user to increase the amount of time their tokens are locked
@@ -31,11 +31,11 @@ contract TimeLockVulnerable {
     function withdraw() public { 
         require(balances[msg.sender] > 0, "Insufficient funds");
         //vulnerable
-        require(block.timestamp > locktime[msg.sender], "Lock time has not expired yet");
+        require(now > locktime[msg.sender], "Lock time has not expired yet");
 
         uint amount = balances[msg.sender];
         balances[msg.sender] = 0;
 
-        payable(msg.sender).transfer(amount);
+        require(msg.sender.call{value: amount}(""), "Failed to send Ether");
     }
 }

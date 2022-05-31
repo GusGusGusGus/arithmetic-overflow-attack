@@ -16,8 +16,8 @@ contract TimeLockVulnerable {
     /// @notice Function that allows user to deposit their funds to be timelocked
     /// @dev payable function that saves the sent value on-chain and the locktime value (timestamp of the current block + 1 week) to the locktime array
     function deposit() external payable {
-        balances[msg.sender] += msg.value;
-        balances[msg.sender] = block.timestamp + 1 weeks;
+        balances[msg.sender] = balances[msg.sender].add(msg.value);
+        locktime[msg.sender] = now.add(1 weeks);
     }
 
     /// @notice Allows a user to increase the amount of time their tokens are locked
@@ -30,15 +30,15 @@ contract TimeLockVulnerable {
 
     /// @notice Function that allows user to withdraw their funds
     /// @dev SAFE withdraw function
-    function withdraw() public { 
+    function withdraw() public returns (bool){ 
         require(balances[msg.sender] > 0, "Insufficient funds");
         //now this assertion will work
-        require(block.timestamp > locktime[msg.sender], "Lock time has not expired yet");
+        require(now > locktime[msg.sender], "Lock time has not expired yet");
 
         uint amount = balances[msg.sender];
         balances[msg.sender] = 0;
 
-        payable(msg.sender).transfer(amount);
-
+        require(payable(msg.sender).transfer(amount), "Failed transfer");
+        return true;
     }
 }
